@@ -16,7 +16,7 @@ class MarkovChain:
 
         :param start_state: The name of the state the chain is in at the start.
         :type start_state: str
-        :param terminal_state: The name of the terminal state we want the probabilty of.
+        :param terminal_state: The name of the terminal state we want the probability of.
         :type terminal_state: str
         :return: The probability of the transition occurring.
         :rtype: float
@@ -40,3 +40,10 @@ class MarkovChain:
                 self.current_state = self.states[state_index]
                 return
         assert False, "This function has a bug if this was reached."
+
+    def attain_sequence(self, length=1):
+        sequence = [self.current_state]
+        for _ in range(length - 1):
+            self.step()
+            sequence.append(self.current_state)
+        return sequence
