@@ -57,3 +57,8 @@ def attain_sequence_occurrences(sequence):
         else:
             occurrences[element] = 1
     return occurrences
+
+def attain_sequence_probability_distribution(sequence):
+    occurrences = attain_sequence_occurrences(sequence)
+    distribution = {x: y / len(sequence) for x, y in occurrences.items()}
+    return distribution

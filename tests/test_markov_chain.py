@@ -4,7 +4,7 @@ from mock import patch, Mock, PropertyMock
 import pytest
 import numpy as np
 
-from markov_chain import MarkovChain, attain_sequence_occurrences
+from markov_chain import MarkovChain, attain_sequence_occurrences, attain_sequence_probability_distribution
 
 
 class TestMarkovChain:
@@ -111,3 +111,14 @@ class TestMarkovChain:
         occurrences = attain_sequence_occurrences(sequence)
 
         assert occurrences == {'N': 3, 'S': 2, 'R': 1}
+
+    def test_can_attain_probability_distribution_for_sequence(self):
+        """
+        Test that the probability distribution can be given for a sequence.
+
+        """
+        sequence = ['N', 'N', 'S', 'R', 'S', 'N']
+
+        distribution = attain_sequence_probability_distribution(sequence)
+
+        assert distribution == {'N': 1/2, 'S': 1/3, 'R': 1/6}
