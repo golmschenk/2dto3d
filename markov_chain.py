@@ -47,3 +47,13 @@ class MarkovChain:
             self.step()
             sequence.append(self.current_state)
         return sequence
+
+
+def attain_sequence_occurrences(sequence):
+    occurrences = {}
+    for element in sequence:
+        if element in occurrences:
+            occurrences[element] += 1
+        else:
+            occurrences[element] = 1
+    return occurrences

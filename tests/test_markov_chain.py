@@ -1,10 +1,10 @@
 """Tests related to Markov chains."""
-from mock import patch, Mock, PropertyMock, MagicMock
+from mock import patch, Mock, PropertyMock
 
 import pytest
 import numpy as np
 
-from markov_chain import MarkovChain
+from markov_chain import MarkovChain, attain_sequence_occurrences
 
 
 class TestMarkovChain:
@@ -88,7 +88,7 @@ class TestMarkovChain:
 
         assert sequence == ['N', 'R', 'N', 'S']
 
-    def test_can_attaining_a_sequence_calls_step(self, chain):
+    def test_can_attaining_sequence_calls_step(self, chain):
         """
         Test that attaining the sequence results in the step being called the appropriate number of times.
 
@@ -100,3 +100,14 @@ class TestMarkovChain:
         sequence = chain.attain_sequence(length=4)
 
         assert len(chain.step.call_args_list) == 3
+
+    def test_can_attain_occurrence_count_for_sequence(self):
+        """
+        Test that the occurrence count can be given for a sequence.
+
+        """
+        sequence = ['N', 'N', 'S', 'R', 'S', 'N']
+
+        occurrences = attain_sequence_occurrences(sequence)
+
+        assert occurrences == {'N': 3, 'S': 2, 'R': 1}
