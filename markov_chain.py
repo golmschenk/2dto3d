@@ -1,5 +1,6 @@
 """The Markov Chain."""
 import random
+import numpy as np
 
 
 class MarkovChain:
@@ -42,6 +43,14 @@ class MarkovChain:
         assert False, "This function has a bug if this was reached."
 
     def attain_sequence(self, length=1):
+        """
+        Runs the Markov chain through a given number of steps and returns the sequence of states stepped through.
+
+        :param length: The length of the sequence to be returned.
+        :type length: int
+        :return: The sequence of states.
+        :rtype: list[str]
+        """
         sequence = [self.current_state]
         for _ in range(length - 1):
             self.step()
@@ -50,6 +59,14 @@ class MarkovChain:
 
 
 def attain_sequence_occurrences(sequence):
+    """
+    Takes the given sequence and counts the occurrences of each state.
+
+    :param sequence: The sequence to be examined.
+    :type sequence: list[str]
+    :return: The dictionary of occurrences and their counts.
+    :rtype: dict[str, int]
+    """
     occurrences = {}
     for element in sequence:
         if element in occurrences:
@@ -58,7 +75,26 @@ def attain_sequence_occurrences(sequence):
             occurrences[element] = 1
     return occurrences
 
+
 def attain_sequence_probability_distribution(sequence):
+    """
+    Takes the given sequence and determines the probability distribution of the states.
+
+    :param sequence: The sequence to be examined.
+    :type sequence: list[str]
+    :return: The dictionary of occurrences and their ratio of counts.
+    :rtype: dict[str, float]
+    """
     occurrences = attain_sequence_occurrences(sequence)
     distribution = {x: y / len(sequence) for x, y in occurrences.items()}
     return distribution
+
+
+if __name__ == '__main__':
+    matrix = np.array([[1 / 2, 1 / 4, 1 / 4],
+                           [1 / 2, 0, 1 / 2],
+                           [1 / 4, 1 / 4, 1 / 2]])
+    chain = MarkovChain(transition_matrix=matrix, states=['R', 'N', 'S'], initial_state='N')
+
+    sequence = chain.attain_sequence(length=1000000)
+    print(attain_sequence_probability_distribution(sequence))
