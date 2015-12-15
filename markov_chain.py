@@ -11,7 +11,7 @@ class MarkovChain:
         self.states = states
         self.current_state = initial_state
 
-    def attain_transition_probability(self, start_state, terminal_state):
+    def attain_transition_probability(self, start_state, terminal_state, steps=1):
         """
         Finds the probability of a transition from one state to another.
 
@@ -19,13 +19,19 @@ class MarkovChain:
         :type start_state: str
         :param terminal_state: The name of the terminal state we want the probability of.
         :type terminal_state: str
+        :param steps: The number of steps in which to reach the desired state.
+        :type steps: int
         :return: The probability of the transition occurring.
         :rtype: float
         """
         start_state_index = self.states.index(start_state)
         terminal_state_index = self.states.index(terminal_state)
 
-        return self.transition_matrix[start_state_index, terminal_state_index]
+        power_matrix = self.transition_matrix
+        for _ in range(steps - 1):
+            power_matrix = np.dot(power_matrix, self.transition_matrix)
+
+        return power_matrix[start_state_index, terminal_state_index]
 
     def step(self):
         """
@@ -91,9 +97,9 @@ def attain_sequence_probability_distribution(sequence):
 
 
 if __name__ == '__main__':
-    matrix = np.array([[1 / 2, 1 / 4, 1 / 4],
-                           [1 / 2, 0, 1 / 2],
-                           [1 / 4, 1 / 4, 1 / 2]])
+    matrix = np.array([[1/2, 1/4, 1/4],
+                       [1/2,   0, 1/2],
+                       [1/4, 1/4, 1/2]])
     chain = MarkovChain(transition_matrix=matrix, states=['R', 'N', 'S'], initial_state='N')
 
     sequence = chain.attain_sequence(length=1000000)

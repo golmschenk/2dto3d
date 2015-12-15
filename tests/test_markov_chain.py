@@ -46,6 +46,11 @@ class TestMarkovChain:
         assert probability0 == 1 / 4
         assert probability1 == 1 / 2
 
+    def test_the_transition_probability_can_be_retrieved_for_multiple_steps(self, chain):
+        probability = chain.attain_transition_probability('R', 'S', steps=2)
+
+        assert probability == 3 / 8
+
     def test_the_initial_state_can_be_set_by_state_name(self):
         """Tests that a state can be initialized."""
         chain = MarkovChain(states=['R', 'N', 'S'], initial_state='N')
